@@ -5,8 +5,6 @@
 -- ============================================================
 
 DROP DATABASE IF EXISTS ced_preenrollment;
-CREATE DATABASE ced_preenrollment;
-USE ced_preenrollment;
 
 -- ============================================================
 --  1. DEPARTMENTS
