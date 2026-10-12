@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.4.11, for Linux (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.45, for Win64 (x86_64)
 --
 -- Host: localhost    Database: ced_preenrollment
 -- ------------------------------------------------------
--- Server version	8.4.11
+-- Server version	8.0.45
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -47,6 +47,26 @@ LOCK TABLES `advising_requests` WRITE;
 /*!40000 ALTER TABLE `advising_requests` DISABLE KEYS */;
 /*!40000 ALTER TABLE `advising_requests` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Temporary view structure for view `ced_students_view`
+--
+
+DROP TABLE IF EXISTS `ced_students_view`;
+/*!50001 DROP VIEW IF EXISTS `ced_students_view`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `ced_students_view` AS SELECT 
+ 1 AS `student_number`,
+ 1 AS `first_name`,
+ 1 AS `last_name`,
+ 1 AS `age`,
+ 1 AS `address`,
+ 1 AS `program_code`,
+ 1 AS `program_name`,
+ 1 AS `year_level`,
+ 1 AS `student_type`*/;
+SET character_set_client = @saved_cs_client;
 
 --
 -- Table structure for table `curriculum`
@@ -131,7 +151,7 @@ CREATE TABLE `enrollment_settings` (
 
 LOCK TABLES `enrollment_settings` WRITE;
 /*!40000 ALTER TABLE `enrollment_settings` DISABLE KEYS */;
-INSERT INTO `enrollment_settings` VALUES (1,0,'2026-2027',1,'2026-10-12 15:44:31',NULL,NULL);
+INSERT INTO `enrollment_settings` VALUES (1,0,'2026-2027',1,'2026-10-12 13:02:37',NULL,NULL);
 /*!40000 ALTER TABLE `enrollment_settings` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -158,7 +178,7 @@ CREATE TABLE `enrollments` (
   CONSTRAINT `enrollments_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `students` (`id`),
   CONSTRAINT `enrollments_ibfk_2` FOREIGN KEY (`subject_id`) REFERENCES `subjects` (`id`),
   CONSTRAINT `enrollments_ibfk_3` FOREIGN KEY (`section_id`) REFERENCES `sections` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -167,6 +187,7 @@ CREATE TABLE `enrollments` (
 
 LOCK TABLES `enrollments` WRITE;
 /*!40000 ALTER TABLE `enrollments` DISABLE KEYS */;
+INSERT INTO `enrollments` VALUES (1,2,42,'2026-2027',1,'auto_enrolled','2026-10-12 17:26:28',NULL),(2,2,43,'2026-2027',1,'auto_enrolled','2026-10-12 17:26:28',NULL),(3,2,1,'2026-2027',1,'auto_enrolled','2026-10-12 17:26:28',NULL),(4,2,2,'2026-2027',1,'auto_enrolled','2026-10-12 17:26:28',NULL),(5,2,17,'2026-2027',1,'auto_enrolled','2026-10-12 17:26:28',NULL),(6,2,18,'2026-2027',1,'auto_enrolled','2026-10-12 17:26:28',NULL),(7,2,23,'2026-2027',1,'auto_enrolled','2026-10-12 17:26:28',NULL),(8,2,25,'2026-2027',1,'auto_enrolled','2026-10-12 17:26:28',NULL),(9,2,38,'2026-2027',1,'auto_enrolled','2026-10-12 17:26:28',NULL),(10,2,34,'2026-2027',1,'auto_enrolled','2026-10-12 17:26:28',NULL),(11,2,32,'2026-2027',1,'auto_enrolled','2026-10-12 17:26:28',NULL),(12,7,42,'2026-2027',1,'auto_enrolled','2026-10-12 17:26:28',NULL),(13,7,43,'2026-2027',1,'auto_enrolled','2026-10-12 17:26:28',NULL),(14,7,1,'2026-2027',1,'auto_enrolled','2026-10-12 17:26:28',NULL),(15,7,2,'2026-2027',1,'auto_enrolled','2026-10-12 17:26:28',NULL),(16,7,17,'2026-2027',1,'auto_enrolled','2026-10-12 17:26:28',NULL),(17,7,18,'2026-2027',1,'auto_enrolled','2026-10-12 17:26:28',NULL),(18,7,23,'2026-2027',1,'auto_enrolled','2026-10-12 17:26:28',NULL),(19,7,25,'2026-2027',1,'auto_enrolled','2026-10-12 17:26:28',NULL),(20,7,38,'2026-2027',1,'auto_enrolled','2026-10-12 17:26:28',NULL),(21,7,34,'2026-2027',1,'auto_enrolled','2026-10-12 17:26:28',NULL),(22,7,32,'2026-2027',1,'auto_enrolled','2026-10-12 17:26:28',NULL);
 /*!40000 ALTER TABLE `enrollments` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -233,6 +254,40 @@ LOCK TABLES `grades` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `it_student_records`
+--
+
+DROP TABLE IF EXISTS `it_student_records`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `it_student_records` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `student_number` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
+  `first_name` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `last_name` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `age` tinyint NOT NULL,
+  `address` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `college_code` varchar(10) COLLATE utf8mb4_general_ci NOT NULL,
+  `program_code` varchar(10) COLLATE utf8mb4_general_ci NOT NULL,
+  `program_name` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `year_level` tinyint NOT NULL,
+  `student_type` varchar(10) COLLATE utf8mb4_general_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `student_number` (`student_number`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `it_student_records`
+--
+
+LOCK TABLES `it_student_records` WRITE;
+/*!40000 ALTER TABLE `it_student_records` DISABLE KEYS */;
+INSERT INTO `it_student_records` VALUES (1,'SIM-0001','Jirah','Ege',19,'Dumaguete City','CED','CpE','BS Computer Engineering',1,'new'),(2,'SIM-0002','JiRAHH','Yehey',20,'Valencia','CED','CpE','BS Computer Engineering',2,'old'),(3,'SIM-0003','Pedro','Reyes',21,'Bacong','CED','CE','BS Civil Engineering',3,'old'),(4,'SIM-0004','Ana','Garcia',22,'Sibulan','CED','EE','BS Electrical Engineering',4,'old'),(5,'SIM-0005','Luis','Torres',19,'Dauin','CBA','BSBA','BS Business Administration',1,'new'),(6,'SIM-0006','Rosa','Mendoza',20,'Zamboanguita','CON','BSN','BS Nursing',2,'old'),(7,'SIM-0007','Samuel','Real',19,'Dumaguete City','CED','CpE','BS Computer Engineering',2,'new'),(9,'SIM-0008','Tomn','Jerry',22,'Dumaguete City','CON','BSN','BS Nursing',3,'new'),(10,'SIM-0009','JiRUH','Ege',19,'Dumaguete City','CED','CpE','BS Computer Engineering',1,'new'),(12,'SIM-0010','JiBRUH','Egestudyante',19,'Dumaguete City','CED','CpE','BS Computer Engineering',2,'new'),(13,'SIM-0011','Kent','Tan',23,'Dumaguete City','CED','CE','BS Civil Engineering',4,'old'),(14,'SIM-0012','Overlord','Baring',32,'Dumaguete City','CED','ME','BS Mechanical Engineering',3,'old');
+/*!40000 ALTER TABLE `it_student_records` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `notices`
 --
 
@@ -242,7 +297,7 @@ DROP TABLE IF EXISTS `notices`;
 CREATE TABLE `notices` (
   `id` int NOT NULL AUTO_INCREMENT,
   `student_id` int NOT NULL,
-  `type` enum('unit_overload','unit_underload','f2f_required','conflict','prereq_not_met') NOT NULL,
+  `type` enum('unit_overload','unit_underload','f2f_required','conflict','prereq_not_met','general') NOT NULL DEFAULT 'f2f_required',
   `message` text NOT NULL,
   `resolved` tinyint(1) NOT NULL DEFAULT '0',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
@@ -352,7 +407,7 @@ CREATE TABLE `students` (
   UNIQUE KEY `student_number` (`student_number`),
   KEY `department_id` (`department_id`),
   CONSTRAINT `students_ibfk_1` FOREIGN KEY (`department_id`) REFERENCES `departments` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -361,6 +416,7 @@ CREATE TABLE `students` (
 
 LOCK TABLES `students` WRITE;
 /*!40000 ALTER TABLE `students` DISABLE KEYS */;
+INSERT INTO `students` VALUES (1,'22-3-00493','Ben','Yee',21,'a',1,'Computer Engineering',4,'old',NULL,0,'2026-10-12 17:02:26',1),(2,'SIM-0001','Jirah','Ege',19,'Dumaguete City',1,'BS Computer Engineering',1,'new',NULL,0,'2026-10-12 17:26:28',1),(3,'SIM-0002','JiRAHH','Yehey',20,'Valencia',1,'BS Computer Engineering',2,'old',NULL,0,'2026-10-12 17:26:28',1),(4,'SIM-0003','Pedro','Reyes',21,'Bacong',2,'BS Civil Engineering',3,'old',NULL,0,'2026-10-12 17:26:28',1),(5,'SIM-0004','Ana','Garcia',22,'Sibulan',3,'BS Electrical Engineering',4,'old',NULL,0,'2026-10-12 17:26:28',1),(6,'SIM-0007','Samuel','Real',19,'Dumaguete City',1,'BS Computer Engineering',2,'old',NULL,0,'2026-10-12 17:26:28',1),(7,'SIM-0009','JiRUH','Ege',19,'Dumaguete City',1,'BS Computer Engineering',1,'new',NULL,0,'2026-10-12 17:26:28',1),(8,'SIM-0010','JiBRUH','Egestudyante',19,'Dumaguete City',1,'BS Computer Engineering',2,'old',NULL,0,'2026-10-12 17:26:28',1),(9,'SIM-0011','Kent','Tan',23,'Dumaguete City',2,'BS Civil Engineering',4,'old',NULL,0,'2026-10-12 17:26:28',1),(10,'SIM-0012','Overlord','Baring',32,'Dumaguete City',4,'BS Mechanical Engineering',3,'old',NULL,0,'2026-10-12 17:26:28',1);
 /*!40000 ALTER TABLE `students` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -514,7 +570,7 @@ CREATE TABLE `teachers` (
 
 LOCK TABLES `teachers` WRITE;
 /*!40000 ALTER TABLE `teachers` DISABLE KEYS */;
-INSERT INTO `teachers` VALUES (1,3,'Kar','Baring','karizzaabaring@su.edu.ph',1,'2026-10-12 15:44:32');
+INSERT INTO `teachers` VALUES (1,3,'Kar','Baring','karizzaabaring@su.edu.ph',1,'2026-10-12 13:02:38');
 /*!40000 ALTER TABLE `teachers` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -536,7 +592,7 @@ CREATE TABLE `users` (
   UNIQUE KEY `username` (`username`),
   KEY `student_id` (`student_id`),
   CONSTRAINT `users_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `students` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -545,9 +601,27 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'admin','$2b$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi','admin',NULL,'2026-10-12 15:44:32'),(2,'busoff','$2b$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi','business_office',NULL,'2026-10-12 15:44:32'),(3,'teacher1','$2b$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi','teacher',NULL,'2026-10-12 15:44:32');
+INSERT INTO `users` VALUES (1,'admin','$2b$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi','admin',NULL,'2026-10-12 13:02:38'),(2,'busoff','$2b$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi','business_office',NULL,'2026-10-12 13:02:38'),(3,'teacher1','$2b$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi','teacher',NULL,'2026-10-12 13:02:38'),(4,'22-3-00493','$2b$10$Bjb97cZ/O/nTzB3NyXYExeDV2LMzwrP8KhPuvlasoAGFc1oseqoXe','student',1,'2026-10-12 17:02:26'),(5,'SIM-0001','$2b$10$6BY/1aH5gu9ivfMVydiF1uRmsJy2tZSgYB2gpcI5FndVYTt8Cyghm','student',2,'2026-10-12 17:26:28'),(6,'SIM-0002','$2b$10$rWW0iSOd7CqHcsBg/YIT1uX21gNzFSDEG7ehiYaZTJWyjEqm5tV5K','student',3,'2026-10-12 17:26:28'),(7,'SIM-0003','$2b$10$.IONCEcs4j5fM9MT02BICOKHVRgj3y137muk/khTb11001yUA9ku6','student',4,'2026-10-12 17:26:28'),(8,'SIM-0004','$2b$10$ZZJE3p9x7Np6RH6SyLShFe49aLoGGE7QKATZCaBpadDceF7faTsia','student',5,'2026-10-12 17:26:28'),(9,'SIM-0007','$2b$10$eVFThZezVmWt4TAa.W.EG.xhrY6YHRhuaFW1GwJwZOBCagAgQQ8X2','student',6,'2026-10-12 17:26:28'),(10,'SIM-0009','$2b$10$AmxZvqrfxKYvAUkJyJvzvOjk/Bu2U3beAdSy6b7GKoUHkigKeUpt.','student',7,'2026-10-12 17:26:28'),(11,'SIM-0010','$2b$10$BrEx.c0dziVmtPAxnzNeTuU0x0DLpc9YyYeT9/PZGoIR29iSR8wz6','student',8,'2026-10-12 17:26:28'),(12,'SIM-0011','$2b$10$ptI5xp2I/sFz7N.lCLIiJeUUfykSq94tjnD8QaX.XyXOouGyFm9i6','student',9,'2026-10-12 17:26:28'),(13,'SIM-0012','$2b$10$6.4Z9AK0xex5IW2grlKoxOnIFgGAEGHDY2lkhQr4BiUSi3efBHD5.','student',10,'2026-10-12 17:26:29');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Final view structure for view `ced_students_view`
+--
+
+/*!50001 DROP VIEW IF EXISTS `ced_students_view`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `ced_students_view` AS select `it_student_records`.`student_number` AS `student_number`,`it_student_records`.`first_name` AS `first_name`,`it_student_records`.`last_name` AS `last_name`,`it_student_records`.`age` AS `age`,`it_student_records`.`address` AS `address`,`it_student_records`.`program_code` AS `program_code`,`it_student_records`.`program_name` AS `program_name`,`it_student_records`.`year_level` AS `year_level`,`it_student_records`.`student_type` AS `student_type` from `it_student_records` where (`it_student_records`.`college_code` = 'CED') */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -558,4 +632,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-10-12 16:36:59
+-- Dump completed on 2026-10-13  1:34:46
