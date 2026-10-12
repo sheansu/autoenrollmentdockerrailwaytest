@@ -244,7 +244,7 @@
 </div>
 
 <script>
-const API = 'http://localhost:5000';
+const API = window.location.origin;
 
 function getToken() { return localStorage.getItem('token'); }
 function authHeaders() { return { 'Content-Type': 'application/json', 'Authorization': `Bearer ${getToken()}` }; }
