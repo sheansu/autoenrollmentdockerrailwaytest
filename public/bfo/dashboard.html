@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Business Office — CED Pre-Enrollment</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=DM+Serif+Display&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --maroon: #6e1020;
+    --maroon-dark: #4a0a15;
+    --gold: #e8c97a;
+    --glass-white: rgba(255, 255, 255, 0.85);
+    --glass-border: rgba(255, 255, 255, 0.4);
+    --text-main: #2d3436;
+    --text-muted: #636e72;
+    --success: #1a7a4a;
+    --success-bg: #edfaf3;
+    --warning: #b45309;
+    --warning-bg: #fef9ee;
+    --error: #c0392b;
+    --error-bg: #fdf0ef;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: url('/assets/SU-Hall.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: var(--text-main);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.25);
+    z-index: -1;
+  }
+
+  /* SIDEBAR */
+  .sidebar {
+    position: fixed;
+    top: 20px; left: 20px; bottom: 20px;
+    width: 260px;
+    background: rgba(74, 10, 21, 0.8);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    z-index: 100;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  }
+
+  .sidebar-brand { padding: 2.5rem 1.5rem; text-align: center; }
+  .sidebar-brand img {
+    height: 60px; width: 60px;
+    margin: 0 auto 1rem;
+    display: block;
+    background: white;
+    border-radius: 50%;
+    padding: 2px;
+  }
+
+  .sidebar-brand h2 {
+    font-family: 'DM Serif Display', serif;
+    color: #fff;
+    font-size: 16px;
+    letter-spacing: 1px;
+  }
+
+  .nav-group { flex: 1; padding: 1rem; }
+  .nav-item {
+    display: flex;
+    align-items: center;
+    padding: 14px 18px;
+    color: rgba(255,255,255,0.6);
+    cursor: pointer;
+    border-radius: 12px;
+    margin-bottom: 8px;
+    transition: all 0.3s ease;
+    font-size: 14px;
+  }
+
+  .nav-item:hover { background: rgba(255,255,255,0.1); color: #fff; }
+  .nav-item.active { background: var(--gold); color: var(--maroon-dark); font-weight: 600; }
+
+  .logout-area { padding: 1.5rem; }
+  .btn-logout {
+    width: 100%; padding: 12px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 12px;
+    color: #fff;
+    cursor: pointer;
+    backdrop-filter: blur(5px);
+    transition: 0.2s;
+  }
+  .btn-logout:hover { background: rgba(255,255,255,0.2); }
+
+  /* MAIN CONTENT AREA */
+  .main { margin-left: 300px; padding: 20px; }
+
+  .header-glass {
+    background: var(--glass-white);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 1.5rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .header-glass h1 { font-family: 'DM Serif Display', serif; font-size: 1.8rem; color: var(--maroon); }
+
+  /* STAT CARDS */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+
+  .stat-card {
+    background: var(--glass-white);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 1.5rem;
+    text-align: center;
+  }
+
+  .stat-card span { font-size: 12px; color: var(--text-muted); text-transform: uppercase; font-weight: 600; }
+  .stat-card h2 { font-size: 2.2rem; color: var(--maroon-dark); margin-top: 5px; }
+
+  /* DATA TABLES */
+  .content-glass {
+    background: var(--glass-white);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 2rem;
+    min-height: 60vh;
+  }
+
+  table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+  th { text-align: left; padding: 15px; color: var(--text-muted); font-size: 12px; text-transform: uppercase; border-bottom: 2px solid rgba(0,0,0,0.05); }
+  td { padding: 15px; font-size: 14px; border-bottom: 1px solid rgba(0,0,0,0.05); }
+  
+  .empty-msg, .empty-state { text-align: center; padding: 40px; color: var(--text-muted); font-style: italic; }
+
+  .badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 20px;
+  }
+  .badge-new { background: #e8f0fe; color: #1a56db; }
+  .badge-old { background: #fef3c7; color: #92400e; }
+  .badge-ok { background: var(--success-bg); color: var(--success); }
+  .badge-notok { background: var(--error-bg); color: var(--error); }
+  
+  .btn-action, .btn-confirm {
+    background: var(--maroon);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: 0.3s;
+  }
+  .btn-action:hover, .btn-confirm:hover {
+    background: var(--maroon-dark);
+    transform: translateY(-1px);
+  }
+
+  .panel { display: none; }
+  .panel.active { display: block; animation: fadeInUp 0.5s ease forwards; }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .search-box {
+    width: 100%;
+    padding: 12px 20px;
+    border-radius: 12px;
+    border: 1px solid var(--glass-border);
+    background: rgba(255,255,255,0.7);
+    font-family: inherit;
+    margin-bottom: 20px;
+    outline: none;
+  }
+  .search-box:focus {
+    border-color: var(--maroon);
+    background: white;
+  }
+
+  .search-section {
+    margin-bottom: 2rem;
+  }
+  
+  .btn-search {
+    background: var(--maroon);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    margin-left: 10px;
+  }
+
+  @media print {
+    .sidebar, .btn-action, .search-box, .btn-search { display: none; }
+    .main { margin-left: 0; }
+    .content-glass { background: white; border: 1px solid #ccc; }
+  }
+</style>
+</head>
+<body>
+
+<div class="sidebar">
+  <div class="sidebar-brand">
+    <img src="/assets/CED-Logo-NoBG.png" alt="CED Logo"/>
+    <h2>BUSINESS OFFICE</h2>
+    <p style="color: var(--gold); font-size: 10px; margin-top: 5px;">COLLEGE OF ENGINEERING</p>
+  </div>
+  
+  <nav class="nav-group">
+    <div class="nav-item active" onclick="showPanel('clearance', this)">Pending Clearance</div>
+    <div class="nav-item" onclick="showPanel('confirm', this)">Confirm Payment</div>
+  </nav>
+
+  <div class="logout-area">
+    <button class="btn-logout" onclick="logout()">Sign Out</button>
+  </div>
+</div>
+
+<div class="main">
+  <div class="header-glass">
+    <h1 id="viewTitle">Pending Clearance</h1>
+    <div style="text-align: right">
+      <p style="font-weight: 600;" id="topbarUser">Cashier Terminal 01</p>
+      <p id="liveClock" style="font-size: 12px; color: var(--text-muted);"></p>
+    </div>
+  </div>
+
+  <!-- PENDING CLEARANCE PANEL -->
+<div class="panel active" id="panel-clearance">
+  <div class="stats-grid">
+    <div class="stat-card">
+      <span>Total Students</span>
+      <h2 id="statTotal">0</h2>
+    </div>
+    <div class="stat-card">
+      <span>Cleared</span>
+      <h2 id="statCleared">0</h2>
+    </div>
+    <div class="stat-card">
+      <span>Pending</span>
+      <h2 id="statPending">0</h2>
+    </div>
+  </div>
+
+  <div class="content-glass">
+    <input type="text" class="search-box" id="overviewSearchInput" placeholder="Filter by Name or ID Number..." onkeyup="filterOverviewTable(this.value)">
+    <table id="overviewTable">
+      <thead>
+        <tr>
+          <th>Student ID</th>
+          <th>Full Name</th>
+          <th>Program</th>
+          <th>Year</th>
+          <th>Type</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="overviewTableBody">
+        <tr><td colspan="7" class="empty-state">Loading students...</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- CONFIRM PAYMENT PANEL -->
+<div class="panel" id="panel-confirm">
+  <div class="content-glass">
+    <h3 style="margin-bottom: 1rem;">Quick Search & Clearance</h3>
+    <div style="display: flex; gap: 10px;">
+      <input type="text" id="searchInput" class="search-box" style="flex: 1; margin-bottom: 0;" placeholder="Enter Student Number or Name..."/>
+      <button class="btn-search" onclick="searchStudent()">Search</button>
+    </div>
+    <div id="searchError" style="display: none; margin-top: 10px; color: var(--error);"></div>
+    <div id="searchResults" style="display: none; margin-top: 20px;">
+      <h4>Search Results</h4>
+      <table style="margin-top: 10px;">
+        <thead>
+          <tr>
+            <th>Student ID</th>
+            <th>Full Name</th>
+            <th>Program</th>
+            <th>Year</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="searchTableBody"></tbody>
+      </table>
+    </div>
+  </div>
+  </div>
+</div>
+
+<script>
+const API = 'http://localhost:5000';
+let allStudents = [];
+
+function updateClock() {
+  const now = new Date();
+  document.getElementById('liveClock').innerText = now.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true, month: 'short', day: 'numeric' });
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+function getToken() { return localStorage.getItem('token'); }
+
+function authHeaders() {
+  return {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${getToken()}`
+  };
+}
+
+function logout() {
+  localStorage.clear();
+  window.location.href = '/login.html';
+}
+
+function showPanel(panelId, navEl) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('panel-' + panelId).classList.add('active');
+  navEl.classList.add('active');
+  document.getElementById('viewTitle').innerText = navEl.innerText;
+}
+
+// ── LOAD ALL STUDENTS FOR OVERVIEW ──────────────────────────────────────
+async function loadOverview() {
+  try {
+    const res = await fetch(`${API}/api/students/all`, { headers: authHeaders() });
+    if (res.status === 401 || res.status === 403) { logout(); return; }
+    allStudents = await res.json();
+    renderOverview(allStudents);
+
+    document.getElementById('statTotal').textContent   = allStudents.length;
+    document.getElementById('statCleared').textContent = allStudents.filter(s => s.ok_to_enroll).length;
+    document.getElementById('statPending').textContent = allStudents.filter(s => !s.ok_to_enroll).length;
+  } catch (err) {
+    document.getElementById('overviewTableBody').innerHTML =
+      `<tr><td colspan="7" class="empty-state">Could not load students.</td></tr>`;
+  }
+}
+
+function renderOverview(students) {
+  const tbody = document.getElementById('overviewTableBody');
+  if (students.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="7" class="empty-state">No students found.</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = students.map(s => `
+    <tr>
+      <td>${escapeHtml(s.student_number)}</td>
+      <td>${escapeHtml(s.last_name)}, ${escapeHtml(s.first_name)}</td>
+      <td>${escapeHtml(s.course)}</td>
+      <td>Year ${s.year_level}</td>
+      <td><span class="badge badge-${s.type}">${s.type.charAt(0).toUpperCase() + s.type.slice(1)}</span></td>
+      <td><span class="badge ${s.ok_to_enroll ? 'badge-ok' : 'badge-notok'}">${s.ok_to_enroll ? 'Cleared' : 'Pending'}</span></td>
+      <td>
+        ${!s.ok_to_enroll
+          ? `<button class="btn-confirm" onclick="confirmPayment(${s.id}, this)">Confirm Payment</button>`
+          : `<span style="font-size:12px; color:var(--success);">✓ Cleared</span>`
+        }
+      </td>
+    </tr>
+  `).join('');
+}
+
+function filterOverviewTable(query) {
+  const q = query.toLowerCase();
+  const filtered = allStudents.filter(s =>
+    s.student_number.toLowerCase().includes(q) ||
+    s.first_name.toLowerCase().includes(q) ||
+    s.last_name.toLowerCase().includes(q)
+  );
+  renderOverview(filtered);
+}
+
+// ── SEARCH STUDENT ─────────────────────────────────────────
+async function searchStudent() {
+  const query = document.getElementById('searchInput').value.trim();
+  const errorEl = document.getElementById('searchError');
+  errorEl.style.display = 'none';
+
+  if (!query) {
+    errorEl.textContent = 'Please enter a student number or name.';
+    errorEl.style.display = 'block';
+    return;
+  }
+
+  try {
+    const res = await fetch(`${API}/api/students/search?query=${encodeURIComponent(query)}`, {
+      headers: authHeaders()
+    });
+    if (res.status === 401 || res.status === 403) { logout(); return; }
+    const results = await res.json();
+
+    document.getElementById('searchResults').style.display = 'block';
+
+    if (results.length === 0) {
+      document.getElementById('searchTableBody').innerHTML =
+        `<tr><td colspan="6" class="empty-state">No students found for "${escapeHtml(query)}".</td></tr>`;
+      return;
+    }
+
+    document.getElementById('searchTableBody').innerHTML = results.map(s => `
+      <tr>
+        <td>${escapeHtml(s.student_number)}</td>
+        <td>${escapeHtml(s.last_name)}, ${escapeHtml(s.first_name)}</td>
+        <td>${escapeHtml(s.course)}</td>
+        <td>Year ${s.year_level}</td>
+        <td><span class="badge ${s.ok_to_enroll ? 'badge-ok' : 'badge-notok'}">${s.ok_to_enroll ? 'Cleared' : 'Pending'}</span></td>
+        <td>
+          ${!s.ok_to_enroll
+            ? `<button class="btn-confirm" onclick="confirmPayment(${s.id}, this)">Confirm Payment</button>`
+            : `<span style="font-size:12px; color:var(--success);">✓ Cleared</span>`
+          }
+        </td>
+      </tr>
+    `).join('');
+  } catch (err) {
+    errorEl.textContent = 'Cannot connect to server.';
+    errorEl.style.display = 'block';
+  }
+}
+
+// ── CONFIRM PAYMENT ────────────────────────────────────────
+async function confirmPayment(studentId, btn) {
+  btn.disabled = true;
+  btn.textContent = 'Confirming...';
+
+  try {
+    const res = await fetch(`${API}/api/students/${studentId}/confirm-payment`, {
+      method: 'PATCH',
+      headers: authHeaders()
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      btn.disabled = false;
+      btn.textContent = 'Confirm Payment';
+      alert(data.message || 'Failed to confirm payment.');
+      return;
+    }
+
+    const td = btn.parentElement;
+    td.innerHTML = `<span style="font-size:12px; color:var(--success);">✓ Cleared</span>`;
+
+    const row = td.parentElement;
+    const statusCell = row.children[row.children.length - 2];
+    statusCell.innerHTML = `<span class="badge badge-ok">Cleared</span>`;
+
+    loadOverview();
+
+  } catch (err) {
+    btn.disabled = false;
+    btn.textContent = 'Confirm Payment';
+    alert('Cannot connect to server.');
+  }
+}
+
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str).replace(/[&<>]/g, function(m) {
+    if (m === '&') return '&amp;';
+    if (m === '<') return '&lt;';
+    if (m === '>') return '&gt;';
+    return m;
+  });
+}
+
+// ── INIT ───────────────────────────────────────────────────
+//I UNCOMMENT RANI
+/*if (!getToken() || localStorage.getItem('role') !== 'business_office') {
+  window.location.href = '/login.html';
+}*/
+
+document.getElementById('topbarUser').textContent = 'Business Office';
+loadOverview();
+</script>
+</body>
+</html>
